@@ -3,6 +3,8 @@
 Intent-driven PCB design framework — describe what your board must do, let automation handle
 the rest.
 
+![Fae Mascot Banner](docs/assets/fae_banner.jpg)
+
 > **Experimental project.** The outputs of this tool have not been independently validated for
 > fabrication. Do not rely on them for safety-critical applications or any use case that requires
 > guarantees of correctness, quality, or performance.
@@ -10,8 +12,55 @@ the rest.
 > The LLM is the author of constraints in YAML. The framework validates and materializes them
 > into geometry. The user has the final say.
 
-Mascot: **Fae the fairy** — voice of the audit reports and the CLI.
+Mascot: **Fae the fairy engineer** — voice of the audit reports and the CLI.
 Main command: `fairypcbot`, short alias: **`fae`**.
+
+## Architecture & Pipeline
+
+![fairypcbot Pipeline Architecture](docs/assets/fae_pipeline.svg)
+
+```mermaid
+flowchart TD
+    subgraph Input["1. Input Stage"]
+        A["Intent Specification\n(intent.yaml)"]
+    end
+
+    subgraph CoreEngine["fairypcbot Engine (fae)"]
+        B["fae validate\n(Pydantic Schemas & Rules)"]
+        C["fae elaborate\n(Netlist Synthesis & Electrical Linter)"]
+        D["fae place / fae render\n(Domain Clustering & SVG Candidates)"]
+        E["fae emit / fae routecheck\n(EasyEDA & Specctra DSN Generators)"]
+    end
+
+    subgraph Output["Output & CAD Integration"]
+        F["EasyEDA Standard / Pro"]
+        G["Specctra DSN / Freerouting"]
+        H["3D PCB Render & JLCPCB Order"]
+    end
+
+    A --> B
+    B -->|Verified| C
+    C -->|IR Synthesized| D
+    D -->|Placement Candidates| E
+    E --> F
+    E --> G
+    F --> H
+    G --> H
+
+    %% Iterative Feedback Loop
+    D -.->|Review Candidates & Electrical Warnings| I["Iterative Refinement\n(LLM / User adjusts hints & constraints)"]
+    I -.->|Refined intent.yaml| A
+```
+
+### Iterative Convergence Loop
+
+`fairypcbot` is designed as an **iterative synthesis pipeline**, not a one-shot black box:
+
+1. **Specify Intent:** You or an LLM write a high-level `intent.yaml`.
+2. **Validate & Elaborate:** `fae validate` and `fae elaborate` check pin roles, designators, and electrical rules (warning on floating inputs or ungrounded power pins).
+3. **Inspect Candidates:** `fae place` generates candidate floorplans and renders ratsnest SVGs in `build/`.
+4. **Refine Iteratively:** The LLM or engineer inspects placement SVGs and linter warnings, then adjusts placement hints, domain groupings, or board dimensions in `intent.yaml`.
+5. **Converge & Emit:** Once candidate layouts converge to your design intent, `fae emit` materializes the board into EasyEDA or Specctra DSN formats.
 
 ## Why this exists
 
@@ -109,8 +158,18 @@ obtained via `catalog fetch`:
 cd examples/metal_detector_bfo
 fae catalog fetch lcsc:C22438596   # LM386M-1
 # ... see examples/metal_detector_bfo/README.md for the full list
-fae validate && fae elaborate && fae place
+fae validate && fae elaborate && fae place && fae emit --target easyeda_std
 ```
+
+#### BFO Metal Detector Gallery
+
+| Schematic Synthesis | Unrouted Ratsnest Placement |
+|---|---|
+| ![EasyEDA Schematic](docs/assets/easyeda_schematic1.png) | ![EasyEDA Unrouted](docs/assets/easyeda_unrouted.png) |
+
+| Routed PCB Traces | 3D Board Render |
+|---|---|
+| ![EasyEDA Routed](docs/assets/easyeda_routed.png) | ![EasyEDA 3D Render](docs/assets/easyeda_3d.png) |
 
 ## Repository structure
 

@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="100%" height="100%" style="background:#0F172A; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="grad-emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B6E4F"/>
+      <stop offset="100%" stop-color="#043927"/>
+    </linearGradient>
+    <linearGradient id="grad-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3E5AB"/>
+      <stop offset="100%" stop-color="#D4A947"/>
+    </linearGradient>
+    <linearGradient id="grad-copper" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5A069"/>
+      <stop offset="100%" stop-color="#B87333"/>
+    </linearGradient>
+    <linearGradient id="grad-card" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#D4A947"/>
+    </marker>
+    <marker id="arrow-feedback" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38BDF8"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="480" y="45" text-anchor="middle" fill="#F8FAFC" font-size="22" font-weight="700" letter-spacing="1">FAIRYPCBOT (FAE) ITERATIVE SYNTHESIS PIPELINE</text>
+  <text x="480" y="68" text-anchor="middle" fill="#94A3B8" font-size="13">Iterative Convergence Loop: Refining Design Intent Until Perfect Alignment</text>
+
+  <!-- Step 1: Input -->
+  <g transform="translate(40, 100)" filter="url(#shadow)">
+    <rect width="150" height="240" rx="12" fill="url(#grad-card)" stroke="#D4A947" stroke-width="2"/>
+    <rect width="150" height="8" rx="4" fill="url(#grad-gold)"/>
+    <circle cx="75" cy="45" r="22" fill="#0B6E4F" opacity="0.3"/>
+    <text x="75" y="51" text-anchor="middle" fill="#D4A947" font-size="18" font-weight="bold">1</text>
+    <text x="75" y="95" text-anchor="middle" fill="#F8FAFC" font-size="15" font-weight="600">Intent YAML</text>
+    <text x="75" y="115" text-anchor="middle" fill="#CBD5E1" font-size="12">High-Level Spec</text>
+    <path d="M 30 135 H 120 M 30 155 H 120 M 30 175 H 90" stroke="#475569" stroke-width="2" stroke-dasharray="4 4"/>
+    <text x="75" y="210" text-anchor="middle" fill="#38BDF8" font-size="11" font-weight="500">LLM / Human Prompt</text>
+  </g>
+
+  <!-- Arrow 1-2 -->
+  <path d="M 190 220 H 210" stroke="#D4A947" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: Validate -->
+  <g transform="translate(215, 100)" filter="url(#shadow)">
+    <rect width="150" height="240" rx="12" fill="url(#grad-card)" stroke="#334155" stroke-width="2"/>
+    <rect width="150" height="8" rx="4" fill="#0B6E4F"/>
+    <circle cx="75" cy="45" r="22" fill="#0B6E4F" opacity="0.3"/>
+    <text x="75" y="51" text-anchor="middle" fill="#34D399" font-size="18" font-weight="bold">2</text>
+    <text x="75" y="95" text-anchor="middle" fill="#F8FAFC" font-size="15" font-weight="600">fae validate</text>
+    <text x="75" y="115" text-anchor="middle" fill="#CBD5E1" font-size="12">Schema &amp; Rules</text>
+    <rect x="25" y="140" width="100" height="30" rx="6" fill="#064E3B" stroke="#10B981" stroke-width="1"/>
+    <text x="75" y="160" text-anchor="middle" fill="#A7F3D0" font-size="11">Pydantic Checks</text>
+    <text x="75" y="210" text-anchor="middle" fill="#34D399" font-size="11" font-weight="500">CC0-1.0 Library</text>
+  </g>
+
+  <!-- Arrow 2-3 -->
+  <path d="M 365 220 H 385" stroke="#D4A947" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: Elaborate -->
+  <g transform="translate(390, 100)" filter="url(#shadow)">
+    <rect width="150" height="240" rx="12" fill="url(#grad-card)" stroke="#334155" stroke-width="2"/>
+    <rect width="150" height="8" rx="4" fill="url(#grad-copper)"/>
+    <circle cx="75" cy="45" r="22" fill="#B87333" opacity="0.3"/>
+    <text x="75" y="51" text-anchor="middle" fill="#E5A069" font-size="18" font-weight="bold">3</text>
+    <text x="75" y="95" text-anchor="middle" fill="#F8FAFC" font-size="15" font-weight="600">fae elaborate</text>
+    <text x="75" y="115" text-anchor="middle" fill="#CBD5E1" font-size="12">Netlist &amp; IR</text>
+    <rect x="25" y="140" width="100" height="30" rx="6" fill="#7C2D12" stroke="#F97316" stroke-width="1"/>
+    <text x="75" y="160" text-anchor="middle" fill="#FFEDD5" font-size="11">IR Graph Synthesis</text>
+    <text x="75" y="210" text-anchor="middle" fill="#F97316" font-size="11" font-weight="500">Electrical Linter</text>
+  </g>
+
+  <!-- Arrow 3-4 -->
+  <path d="M 540 220 H 560" stroke="#D4A947" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 4: Place & Review -->
+  <g transform="translate(565, 100)" filter="url(#shadow)">
+    <rect width="150" height="240" rx="12" fill="url(#grad-card)" stroke="#38BDF8" stroke-width="2"/>
+    <rect width="150" height="8" rx="4" fill="#38BDF8"/>
+    <circle cx="75" cy="45" r="22" fill="#0284C7" opacity="0.3"/>
+    <text x="75" y="51" text-anchor="middle" fill="#38BDF8" font-size="18" font-weight="bold">4</text>
+    <text x="75" y="95" text-anchor="middle" fill="#F8FAFC" font-size="15" font-weight="600">fae place / render</text>
+    <text x="75" y="115" text-anchor="middle" fill="#CBD5E1" font-size="12">Floorplan &amp; SVG</text>
+    <rect x="25" y="140" width="100" height="30" rx="6" fill="#0C4A6E" stroke="#0EA5E9" stroke-width="1"/>
+    <text x="75" y="160" text-anchor="middle" fill="#BAE6FD" font-size="11">Domain Clustering</text>
+    <text x="75" y="210" text-anchor="middle" fill="#38BDF8" font-size="11" font-weight="500">Candidate Inspection</text>
+  </g>
+
+  <!-- Arrow 4-5 -->
+  <path d="M 715 220 H 735" stroke="#D4A947" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 5: Emit & Route -->
+  <g transform="translate(740, 100)" filter="url(#shadow)">
+    <rect width="180" height="240" rx="12" fill="url(#grad-card)" stroke="#D4A947" stroke-width="2"/>
+    <rect width="180" height="8" rx="4" fill="url(#grad-gold)"/>
+    <circle cx="90" cy="45" r="22" fill="#D4A947" opacity="0.3"/>
+    <text x="90" y="51" text-anchor="middle" fill="#F3E5AB" font-size="18" font-weight="bold">5</text>
+    <text x="90" y="95" text-anchor="middle" fill="#F8FAFC" font-size="15" font-weight="600">fae emit &amp; route</text>
+    <text x="90" y="115" text-anchor="middle" fill="#CBD5E1" font-size="12">EasyEDA &amp; DSN</text>
+    <rect x="20" y="140" width="140" height="30" rx="6" fill="#78350F" stroke="#F59E0B" stroke-width="1"/>
+    <text x="90" y="160" text-anchor="middle" fill="#FEF3C7" font-size="11">EasyEDA / Specctra DSN</text>
+    <text x="90" y="210" text-anchor="middle" fill="#F59E0B" font-size="11" font-weight="700">Materialized PCB</text>
+  </g>
+
+  <!-- Iterative Loop Feedback Path from Step 4 back to Step 1 -->
+  <path d="M 640 340 V 385 H 115 V 340" fill="none" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="6 6" marker-end="url(#arrow-feedback)"/>
+  <rect x="280" y="370" width="220" height="28" rx="14" fill="#0369A1" stroke="#38BDF8" stroke-width="1"/>
+  <text x="390" y="388" text-anchor="middle" fill="#F0F9FF" font-size="11" font-weight="600">Iterative Feedback &amp; Constraint Refinement</text>
+
+  <!-- Bottom Banner -->
+  <rect x="40" y="420" width="880" height="40" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="480" y="445" text-anchor="middle" fill="#CBD5E1" font-size="13">
+    <tspan fill="#D4A947" font-weight="bold">Iterative Convergence:</tspan> The LLM/User inspects feedback &amp; placement candidates to refine constraints until intent matches physical board output.
+  </text>
+</svg>
