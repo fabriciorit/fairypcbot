@@ -12,10 +12,49 @@ the rest.
 > The LLM is the author of constraints in YAML. The framework validates and materializes them
 > into geometry. The user has the final say.
 
-Mascot: **Fae the fairy engineer** — voice of the audit reports and the CLI.
+Mascot: **Fae the fairy engineer** — voice of the audit reports and the CLI.  
 Main command: `fairypcbot`, short alias: **`fae`**.
 
-## Architecture & Pipeline
+---
+
+## 🌟 What fairypcbot Does
+
+`fairypcbot` bridges the gap between AI LLM agents and electronic design automation (EDA). Instead of asking LLMs to generate complex CAD coordinates or proprietary format syntaxes, you (or an AI agent) describe higher-level **intents** in structured YAML.
+
+- 🎯 **Intent-Driven Synthesis**: Declare functional goals (`decouples`, `power_rail`, `differential_pair`, `crystal_oscillator`) rather than placing every wire manually.
+- ⚡ **Electrical Linter & Formal Validation**: Instant validation via Pydantic schemas checking for floating input pins, ungrounded power rails, designator conflicts, and circular imports.
+- 🗺️ **Domain-Based Floorplanning**: Physics-informed placement heuristics automatically cluster decoupling capacitors near IC power pins and keep high-frequency feedback loops compact.
+- 🖨️ **Multi-CAD Emission**: Materialize valid layouts into native EasyEDA (Standard & Pro) files or Specctra DSN format for automated routing via Freerouting.
+- 🛡️ **Clean Data Provenance**: 100% authorial CC0-1.0 founding library. Vendor data is fetched on-demand directly to the user's local cache (`~/.cache/fairypcbot/`), keeping the codebase 100% free of third-party licensing encumbrances.
+
+---
+
+## 🚀 Simplicity Meets Power
+
+### How Simple It Is
+
+Going from an idea to a placed board candidate takes 5 straightforward CLI commands:
+
+```bash
+fae init my_project
+cd my_project
+# Edit intent.yaml (or let an LLM agent write it)
+fae validate
+fae elaborate
+fae place
+fae emit --target easyeda_std
+```
+
+### How Powerful It Gets
+
+Under the hood, `fairypcbot` performs multi-layer synthesis:
+- **Graph-Based Netlist Synthesis**: Converts abstract intents into an Intermediate Representation (IR) containing netlists, electrical rules, and domain groupings.
+- **Physics-Informed Heuristics**: Evaluates `compact`, `spread`, and `balanced` floorplans, computing routability estimates, cell clamps, and thermal clearance guards.
+- **Ratsnest SVG Rendering**: Generates instant high-resolution SVG visual candidates in `build/` so engineers and LLMs can inspect floorplans before committing to CAD tools.
+
+---
+
+## 📐 Architecture & Pipeline
 
 ![fairypcbot Pipeline Architecture](docs/assets/fae_pipeline.svg)
 
@@ -62,18 +101,9 @@ flowchart TD
 4. **Refine Iteratively:** The LLM or engineer inspects placement SVGs and linter warnings, then adjusts placement hints, domain groupings, or board dimensions in `intent.yaml`.
 5. **Converge & Emit:** Once candidate layouts converge to your design intent, `fae emit` materializes the board into EasyEDA or Specctra DSN formats.
 
-## Why this exists
+---
 
-I grew tired of the workflow where an LLM helps design a PCB but the human still burns hours on
-editing minutiae, obscure scripting languages, and vendor-specific format quirks. I wanted something
-simpler: a tool comfortable enough that *any* LLM capable of understanding the system can supply the
-hints needed to build engineering-oriented PCBs, adapted to what the user actually needs.
-
-It has been useful in my own projects. I hope it is useful to others too.
-
-*— Fabrício Ribeiro Toloczko*
-
-## Status
+## 🛠️ Status & Implementation
 
 Milestones M1–M5 of the roadmap are implemented:
 
@@ -92,49 +122,9 @@ Milestones M1–M5 of the roadmap are implemented:
 `catalog fetch`), the output is a *placement preview*, not a routable board. This is reported
 explicitly on every `emit` run as a per-part degradation.
 
-## Installation (development)
+---
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-```
-
-This installs the `fairypcbot` and `fae` commands in the virtual environment.
-
-## Quick guide: from zero to a placement
-
-```bash
-# 1. create the structure of a new project
-fae init fairy_project
-cd fairy_project
-
-# 2. edit intent.yaml (you or an LLM) — see examples/ for reference
-
-# 3. validate
-fae validate
-
-# 4. elaborate (netlist + electrical linter)
-fae elaborate
-
-# 5. place (generates candidates + SVG in build/)
-fae place
-
-# 6. review build/candidate_*.svg and, if you want, re-render with ratsnest
-fae render --heuristic compact --ratsnest
-
-# 7. emit for the target CAD tool
-fae emit --target easyeda_std
-fae emit --target specctra
-
-# 8. (optional, requires Freerouting installed) routability check
-fae routecheck
-```
-
-Every command writes events to the audit trail (`audit/*.jsonl`, can be disabled with
-`--no-audit`); `fae audit show` shows the timeline.
-
-## Examples
+## 📸 Examples & Showcase
 
 ### `led_blinker_555` — offline "hello world"
 
@@ -163,57 +153,65 @@ fae validate && fae elaborate && fae place && fae emit --target easyeda_std
 
 #### BFO Metal Detector Gallery
 
-| Schematic Synthesis | Unrouted Ratsnest Placement |
+| Schematic Synthesis | Unrouted Ratsnest Floorplan |
 |---|---|
 | ![EasyEDA Schematic](docs/assets/easyeda_schematic1.png) | ![EasyEDA Unrouted](docs/assets/easyeda_unrouted.png) |
 
-| Routed PCB Traces | 3D Board Render |
+| Interactive Routing Process in Progress | 3D Board Render |
 |---|---|
-| ![EasyEDA Routed](docs/assets/easyeda_routed.png) | ![EasyEDA 3D Render](docs/assets/easyeda_3d.png) |
+| ![EasyEDA Routing Process](docs/assets/easyeda_routed.png) | ![EasyEDA 3D Render](docs/assets/easyeda_3d.png) |
 
-## Repository structure
+> *Note: The image above demonstrates the interactive copper routing process in progress within EasyEDA after importing fairypcbot's placement floorplan and netlist.*
 
+---
+
+## 🔮 Future Roadmap
+
+We are actively expanding `fairypcbot`. Future developments include:
+
+- 🔌 **Additional EDA Emitters**: Support for KiCad 8+ (`.kicad_pcb` / `.kicad_sch`), Altium Designer, and LibrePCB formats.
+- 🔄 **Project Importer & Reverse-Engineering**: Import existing KiCad, Eagle, or EasyEDA projects into fairypcbot `intent.yaml` structures.
+- 📦 **Community Open-Source Library Ecosystem**: Dedicated community repository for verified CC0 component classes, datasheets, and IPC-7351 footprints completely free of vendor licensing encumbrances.
+- 🤖 **Native MCP Server Plugin**: Model Context Protocol (MCP) tool server for seamless integration with VSCode, Claude Desktop, and AI coding agents.
+
+---
+
+## ⚠️ Open Challenges & Known Issues (Help Needed!)
+
+We welcome community contributions! Key areas currently seeking improvements include:
+
+- 📐 **Schematic Visual Layout Optimization**: Improving automatic symbol placement and wire routing in emitted EasyEDA Pro/Std schematics to minimize visual crossing of net labels.
+- 🔀 **Bidirectional PCB & Schematic Coherence**: Ensuring strict 1:1 cross-probing and synchronized back-annotation when layout edits are performed in external CAD tools.
+- 🧊 **Automatic 3D Model Association**: Automating STEP 3D model linking for generic authorial component classes without requiring explicit vendor catalog fetches.
+
+---
+
+## 💻 Installation & Quick Start
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
 ```
-fairypcbot/
-├── src/fairypcbot/
-│   ├── cli.py                  # typer commands
-│   ├── schemas/                # pydantic models (intent, class, part, IR, placement...)
-│   ├── registry/               # @intent_type, @component_model, @placement_heuristic, extends
-│   ├── validate/               # stage 2
-│   ├── elaborate/              # stage 3 (netlist/rules + electrical linter)
-│   ├── place/                  # stage 4 (domains + floorplan + legalization)
-│   ├── render/                 # static SVG
-│   ├── emit/                   # stage 5 (EasyEDA Std/Pro, Specctra DSN, routecheck)
-│   ├── catalog/                # LCSC/EasyEDA resolution (+ footprint geometry)
-│   └── audit/                  # JSONL audit trail
-├── library/
-│   ├── classes/                # component class descriptors (29 classes, CC0-1.0)
-│   └── packages/               # generic footprints — IPC-7351 nominal (CC0-1.0)
-├── docs/
-│   ├── llm/                    # LLM integration contract (read by `fae llm`)
-│   ├── limitations.md          # known limitations by area
-│   ├── ir.md                   # IR format (netlist, rules, placement)
-│   └── easyeda_format.md       # subset of EasyEDA format used
-├── examples/
-│   ├── led_blinker_555/        # offline example (class-only, no network)
-│   └── metal_detector_bfo/     # analog showcase (requires catalog fetch)
-└── tests/
+
+Run test suite offline:
+```bash
+pytest -m "not network"                              # test suite (offline)
+ruff check src tests                                 # lint
+mypy src/fairypcbot/schemas src/fairypcbot/registry  # strict type check
 ```
 
-## Data and licensing
+---
+
+## 📜 Data, Licensing & Provenance
 
 - **Code**: [Apache-2.0](LICENSE).
-- **`library/`**: [CC0-1.0](library/LICENSE). Contains only authorial descriptors (component
-  classes and generic packages) — no vendor data.
-- **No vendor data is redistributed.** `fae catalog fetch` and `fae datasheet ingest` download
-  third-party data **directly to the user's machine** (cached in `~/.cache/fairypcbot/`, outside
-  the repository). That data remains subject to the terms of its source (EasyEDA/LCSC,
-  manufacturers). **Verifying and complying with those terms is the user's responsibility** — this
-  project neither licenses nor warrants third-party data.
-- Practical consequence: do not commit library generated by `fetch` into a public repository.
-  `examples/*/library/` is already in `.gitignore` for this reason.
+- **`library/`**: [CC0-1.0](library/LICENSE). Contains only authorial descriptors (component classes and generic packages) — no vendor data.
+- **No vendor data is redistributed.** `fae catalog fetch` and `fae datasheet ingest` download third-party data **directly to the user's machine** (cached in `~/.cache/fairypcbot/`, outside the repository). That data remains subject to the terms of its source (EasyEDA/LCSC, manufacturers). **Verifying and complying with those terms is the user's responsibility**.
 
-## Technical documentation
+---
+
+## 📖 Technical Documentation
 
 - [`docs/llm/`](docs/llm/) — LLM integration contract (`fae llm` prints the index)
 - [`docs/ir.md`](docs/ir.md) — format of `netlist.json`, `rules.json`, `placement.json`
@@ -221,12 +219,6 @@ fairypcbot/
 - [`docs/limitations.md`](docs/limitations.md) — known limitations by area
 - [`docs/library_repo.md`](docs/library_repo.md) — library repository structure
 
-## Development
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution guidelines.
 
-```bash
-pytest -m "not network"                              # test suite (offline)
-ruff check src tests                                 # lint
-mypy src/fairypcbot/schemas src/fairypcbot/registry  # strict type check
-```
-
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full development guide.
+*— Built by Fabrício Ribeiro Toloczko & Fae the Fairy Engineer.*
