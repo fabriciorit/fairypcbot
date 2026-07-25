@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package (dev)
+        run: pip install -e ".[dev]"
+
+      - name: Lint (ruff)
+        run: ruff check src tests
+
+      - name: Type check (schemas + registry)
+        run: mypy src/fairypcbot/schemas src/fairypcbot/registry
+
+      - name: Test suite
+        run: pytest -q -m "not network"
+
+      - name: Smoke test (offline example)
+        run: |
+          fae validate  -p examples/led_blinker_555 --no-audit
+          fae elaborate -p examples/led_blinker_555 --no-audit
+          fae place     -p examples/led_blinker_555 --no-audit

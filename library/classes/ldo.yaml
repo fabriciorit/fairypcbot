@@ -1,0 +1,25 @@
+fairypcbot: "0.1"
+kind: component_class
+id: ldo
+pins:
+  - {role: vin}
+  - {role: gnd}
+  - {role: vout}
+  - {role: en}
+params:
+  required: [vin_range_v, vout_v, iout_max_a]
+  optional: [dropout_v]
+models: {}
+rules:
+  - {type: thermal_source}
+application_circuit:
+  parts:
+    CIN: {class: capacitor, sizing: ldo.cin_cout_sizing}
+    COUT: {class: capacitor, sizing: ldo.cin_cout_sizing}
+  nets_internal: []
+  intents:
+    - {type: decouples, part: CIN, target: SELF.vin, max_distance_mm: 3}
+    - {type: decouples, part: COUT, target: SELF.vout, max_distance_mm: 3}
+  domain:
+    atomic: false
+    split_cost: low

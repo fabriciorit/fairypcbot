@@ -1,0 +1,28 @@
+fairypcbot: "0.1"
+kind: component_package
+id: soic-8
+aliases: [SOIC-8, SOIC8, SO-8]
+description: >
+  SOIC-8, 3.9mm body (most common variant). Land pattern is an approximate IPC-7351 reference
+  (nominal), not from a specific manufacturer — confirm against the real datasheet when available.
+  Pinout: 1-4 on the left side (top to bottom), 5-8 on the right side (bottom to top) — the usual
+  SOIC convention, not necessarily every manufacturer's.
+variants:
+  "4.9x3.9":
+    default: true
+    body: {width_mm: 4.9, height_mm: 3.9}
+    footprint:
+      pads:
+        - {number: "1", shape: rect, x_mm: -2.7, y_mm: 1.905, width_mm: 1.55, height_mm: 0.6}
+        - {number: "2", shape: rect, x_mm: -2.7, y_mm: 0.635, width_mm: 1.55, height_mm: 0.6}
+        - {number: "3", shape: rect, x_mm: -2.7, y_mm: -0.635, width_mm: 1.55, height_mm: 0.6}
+        - {number: "4", shape: rect, x_mm: -2.7, y_mm: -1.905, width_mm: 1.55, height_mm: 0.6}
+        - {number: "5", shape: rect, x_mm: 2.7, y_mm: -1.905, width_mm: 1.55, height_mm: 0.6}
+        - {number: "6", shape: rect, x_mm: 2.7, y_mm: -0.635, width_mm: 1.55, height_mm: 0.6}
+        - {number: "7", shape: rect, x_mm: 2.7, y_mm: 0.635, width_mm: 1.55, height_mm: 0.6}
+        - {number: "8", shape: rect, x_mm: 2.7, y_mm: 1.905, width_mm: 1.55, height_mm: 0.6}
+    provenance:
+      footprint:
+        source: user
+        ref: "nominal IPC-7351 approximation, manually seeded in the library"
+        timestamp: "2026-07-19T19:58:57Z"

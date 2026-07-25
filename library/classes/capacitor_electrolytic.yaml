@@ -1,0 +1,10 @@
+fairypcbot: "0.1"
+kind: component_class
+id: capacitor.electrolytic
+extends: passive.two_terminal
+params:
+  required: [capacitance_f, voltage_rating_v]
+  optional: [esr_ohm]
+models: {}
+rules: []
+application_circuit: null

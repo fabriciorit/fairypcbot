@@ -1,0 +1,13 @@
+fairypcbot: "0.1"
+kind: component_class
+id: crystal
+pins:
+  - {role: xin}
+  - {role: xout}
+  - {role: gnd}
+params:
+  required: [frequency_hz, load_capacitance_f]
+  optional: [esr_ohm]
+models: {}
+rules: []
+application_circuit: null

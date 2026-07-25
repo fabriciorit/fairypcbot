@@ -1,0 +1,20 @@
+fairypcbot: "0.1"
+kind: component_class
+id: mcu.generic
+pins:
+  - {role: vdd}
+  - {role: vss}
+params:
+  required: [vdd_range_v]
+  optional: [package]
+models: {}
+rules: []
+application_circuit:
+  parts:
+    C_VDD: {class: capacitor, sizing: mcu.decoupling_sizing}
+  nets_internal: []
+  intents:
+    - {type: decouples, part: C_VDD, target: SELF.vdd, max_distance_mm: 3}
+  domain:
+    atomic: false
+    split_cost: low

@@ -1,0 +1,17 @@
+fairypcbot: "0.1"
+kind: component_class
+id: usb_connector_c
+pins:
+  - {role: vbus}
+  - {role: gnd}
+  - {role: dp}
+  - {role: dm}
+  - {role: cc1}
+  - {role: cc2}
+  - {role: shield}
+params:
+  required: []
+  optional: []
+models: {}
+rules: []
+application_circuit: null

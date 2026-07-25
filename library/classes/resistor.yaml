@@ -1,0 +1,13 @@
+fairypcbot: "0.1"
+kind: component_class
+id: resistor
+pins:
+  - {role: p1}
+  - {role: p2}
+params:
+  required: [resistance_ohm]
+  optional: [power_w, tolerance_pct]
+models: {}
+rules:
+  - type: domain_atomic
+application_circuit: null

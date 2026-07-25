@@ -1,0 +1,10 @@
+fairypcbot: "0.1"
+kind: component_class
+id: capacitor.trimmer
+extends: passive.two_terminal
+params:
+  required: [capacitance_min_f, capacitance_max_f]
+  optional: []
+models: {}
+rules: []
+application_circuit: null

@@ -1,0 +1,13 @@
+fairypcbot: "0.1"
+kind: component_class
+id: transistor.bjt.npn
+pins:
+  - {role: collector}
+  - {role: base}
+  - {role: emitter}
+params:
+  required: [vce_max_v, ic_max_a, hfe_min]
+  optional: [ft_hz]
+models: {}
+rules: []
+application_circuit: null

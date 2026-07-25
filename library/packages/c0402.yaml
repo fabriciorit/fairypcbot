@@ -1,0 +1,20 @@
+fairypcbot: "0.1"
+kind: component_package
+id: c0402
+aliases: [C0402, "0402cap"]
+description: >
+  0402 (imperial) chip capacitor. Land pattern is an approximate IPC-7351 reference (nominal),
+  not from a specific manufacturer — confirm against the real datasheet when available.
+variants:
+  "1.0x0.5":
+    default: true
+    body: {width_mm: 1.0, height_mm: 0.5}
+    footprint:
+      pads:
+        - {number: "1", shape: rect, x_mm: -0.5, y_mm: 0, width_mm: 0.6, height_mm: 0.6}
+        - {number: "2", shape: rect, x_mm: 0.5, y_mm: 0, width_mm: 0.6, height_mm: 0.6}
+    provenance:
+      footprint:
+        source: user
+        ref: "nominal IPC-7351 approximation, manually seeded in the library"
+        timestamp: "2026-07-19T19:58:57Z"

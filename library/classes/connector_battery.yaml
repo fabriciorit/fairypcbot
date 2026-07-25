@@ -1,0 +1,12 @@
+fairypcbot: "0.1"
+kind: component_class
+id: connector.battery
+pins:
+  - {role: pos}
+  - {role: neg}
+params:
+  required: []
+  optional: [voltage_v]
+models: {}
+rules: []
+application_circuit: null

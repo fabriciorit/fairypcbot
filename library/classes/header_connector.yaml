@@ -1,0 +1,11 @@
+fairypcbot: "0.1"
+kind: component_class
+id: connector.header
+pins:
+  - {role: pin, count: 2, separable: true}
+params:
+  required: [pitch_mm]
+  optional: [pin_count, angle]
+models: {}
+rules: []
+application_circuit: null

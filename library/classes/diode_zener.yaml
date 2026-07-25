@@ -1,0 +1,10 @@
+fairypcbot: "0.1"
+kind: component_class
+id: diode.zener
+extends: diode
+params:
+  required: [vz_v]
+  optional: []
+models: {}
+rules: []
+application_circuit: null

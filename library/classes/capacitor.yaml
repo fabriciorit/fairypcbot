@@ -1,0 +1,13 @@
+fairypcbot: "0.1"
+kind: component_class
+id: capacitor
+pins:
+  - {role: p1}
+  - {role: p2}
+params:
+  required: [capacitance_f]
+  optional: [voltage_rating_v, dielectric]
+models: {}
+rules:
+  - type: domain_atomic
+application_circuit: null

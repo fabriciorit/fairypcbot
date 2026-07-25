@@ -1,0 +1,12 @@
+fairypcbot: "0.1"
+kind: component_class
+id: esd_array
+pins:
+  - {role: io, count: 2, separable: true}
+  - {role: gnd}
+params:
+  required: [vrwm_v, channels]
+  optional: []
+models: {}
+rules: []
+application_circuit: null

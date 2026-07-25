@@ -1,0 +1,25 @@
+fairypcbot: "0.1"
+kind: component_class
+id: can_transceiver
+pins:
+  - {role: vcc}
+  - {role: gnd}
+  - {role: tx}
+  - {role: rx}
+  - {role: canh}
+  - {role: canl}
+params:
+  required: []
+  optional: []
+models: {}
+rules: []
+application_circuit:
+  parts:
+    C_VCC: {class: capacitor, sizing: mcu.decoupling_sizing}
+  nets_internal: []
+  intents:
+    - {type: decouples, part: C_VCC, target: SELF.vcc, max_distance_mm: 3}
+    - {type: diff_pair, nets: [CANH, CANL], impedance_ohm: 120}
+  domain:
+    atomic: false
+    split_cost: med

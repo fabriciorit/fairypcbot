@@ -1,0 +1,13 @@
+fairypcbot: "0.1"
+kind: component_class
+id: potentiometer
+pins:
+  - {role: end_a}
+  - {role: wiper}
+  - {role: end_b}
+params:
+  required: [resistance_ohm]
+  optional: [taper]
+models: {}
+rules: []
+application_circuit: null

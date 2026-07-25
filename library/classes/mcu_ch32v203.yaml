@@ -1,0 +1,27 @@
+fairypcbot: "0.1"
+kind: component_class
+id: mcu.riscv.ch32v203
+extends: mcu.generic
+pins:
+  - {role: swdio}
+  - {role: swclk}
+  - {role: usb_dp}
+  - {role: usb_dm}
+  - {role: can_tx}
+  - {role: can_rx}
+params:
+  required: [vdd_range_v]
+  optional: [package]
+models: {}
+rules: []
+application_circuit:
+  parts:
+    Y1: {class: crystal}
+    C_XTAL1: {class: capacitor, sizing: crystal.load_cap_sizing}
+    C_XTAL2: {class: capacitor, sizing: crystal.load_cap_sizing}
+  nets_internal: [XTAL_IN, XTAL_OUT]
+  intents:
+    - {type: analog_sensitive, nets: [XTAL_IN, XTAL_OUT]}
+  domain:
+    atomic: false
+    split_cost: med

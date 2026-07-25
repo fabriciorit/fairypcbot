@@ -1,0 +1,15 @@
+fairypcbot: "0.1"
+kind: component_class
+id: mosfet.n_channel
+pins:
+  - {role: gate}
+  - {role: drain}
+  - {role: source}
+params:
+  required: [vth_v, rds_on_ohm, qg_c, vds_max_v, id_max_a]
+  optional: []
+models:
+  iv_curve: mosfet.level1
+  gate_charge_loss: mosfet.qg_switching_loss
+rules: []
+application_circuit: null

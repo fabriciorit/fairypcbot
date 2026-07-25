@@ -1,0 +1,55 @@
+fairypcbot: "0.1"
+kind: board
+name: omdongle_can_base
+description: >
+  Dongle CAN base: CH32V203, TJA1051, USB-C, buck 5V→3V3.
+
+board:
+  layers: 2
+  outline:
+    shape: rect
+    width_mm: 40
+    height_mm: 30
+  mounting_holes:
+    - {x_mm: 3, y_mm: 3, drill_mm: 2.2}
+    - {x_mm: 37, y_mm: 27, drill_mm: 2.2}
+
+parts:
+  U1:
+    part: "lcsc:C900001"
+  U2:
+    part: "lcsc:C900002"
+  U3:
+    part: "lcsc:C900003"
+  J1:
+    part: "lcsc:C900004"
+  C1:
+    part: "lcsc:C900005"
+  C2:
+    part: "lcsc:C900005"
+
+nets:
+  VBUS: [J1.vbus, U3.vin, U3.en]
+  GND: [J1.gnd, U1.vss, U2.gnd, U3.gnd, C1.p2, C2.p2]
+  V3V3: [U3.vout, U1.vdd, C1.p1, U2.vcc, C2.p1]
+  CAN_H: [U2.canh]
+  CAN_L: [U2.canl]
+  CAN_TX: [U1.can_tx, U2.tx]
+  CAN_RX: [U1.can_rx, U2.rx]
+  USB_DP: [J1.dp, U1.usb_dp]
+  USB_DM: [J1.dm, U1.usb_dm]
+  SWDIO: [U1.swdio]
+  SWCLK: [U1.swclk]
+
+intents:
+  - {type: power_rail, net: V3V3, voltage_v: 3.3, max_current_a: 0.5}
+  - {type: diff_pair, nets: [USB_DP, USB_DM], impedance_ohm: 90}
+  - {type: diff_pair, nets: [CAN_H, CAN_L], impedance_ohm: 120}
+  - {type: decouples, part: C1, target: U1.vdd, max_distance_mm: 3}
+  - {type: decouples, part: C2, target: U2.vcc, max_distance_mm: 3}
+  - {type: high_current, net: VBUS, current_a: 0.5}
+
+placement_hints:
+  - {part: J1, anchor: edge_south, orientation: outward}
+  - {part: U3, region_pref: west}
+  - {part: U1, near: U2, max_distance_mm: 15}

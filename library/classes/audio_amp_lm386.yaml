@@ -1,0 +1,22 @@
+fairypcbot: "0.1"
+kind: component_class
+id: audio_amp.lm386
+description: >
+  LM386 audio amplifier (National/TI) — gain adjustable 20-200x via the GAIN pins (1/8),
+  differential input, single-ended class-AB output.
+pins:
+  - {role: gain1, type: other}
+  - {role: in_minus, type: input}
+  - {role: in_plus, type: input}
+  - {role: gnd, type: gnd}
+  - {role: vout, type: output}
+  - {role: vs, type: power}
+  - {role: bypass, type: output}
+  - {role: gain8, type: other}
+params:
+  required: [vs_range_v, gain_db_min]
+  optional: [quiescent_current_ma, po_max_w]
+models: {}
+rules:
+  - {type: thermal_source}
+application_circuit: null

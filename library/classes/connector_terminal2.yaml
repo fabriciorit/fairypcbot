@@ -1,0 +1,16 @@
+fairypcbot: "0.1"
+kind: component_class
+id: connector.terminal2
+description: >
+  2-way connector for external wiring (e.g. a hand-wound search coil) — distinct pin roles
+  (a/b), unlike connector.header/connector.jst (a single role repeated), because the two
+  ways here typically go to DIFFERENT nets, not to the same net in parallel.
+pins:
+  - {role: a}
+  - {role: b}
+params:
+  required: [pitch_mm]
+  optional: []
+models: {}
+rules: []
+application_circuit: null

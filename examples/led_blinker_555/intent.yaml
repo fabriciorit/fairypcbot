@@ -1,0 +1,56 @@
+fairypcbot: "0.1"
+kind: board
+name: led_blinker_555
+description: >
+  Classic LED blinker using a 555 timer in astable mode.
+  This is a minimal offline example that uses only class references.
+
+board:
+  layers: 2
+  outline:
+    shape: rect
+    width_mm: 25
+    height_mm: 20
+
+parts:
+  U1:
+    class: timer_555
+    package_ref: soic-8
+  R1:
+    class: resistor
+    params: {resistance: "10k"}
+    package_ref: r0402
+  R2:
+    class: resistor
+    params: {resistance: "100k"}
+    package_ref: r0402
+  C1:
+    class: capacitor
+    params: {capacitance: "10u"}
+    package_ref: c0402
+  C2:
+    class: capacitor
+    params: {capacitance: "100n"}
+    package_ref: c0402
+  D1:
+    class: led
+    params: {color: red}
+    package_ref: r0402
+  R3:
+    class: resistor
+    params: {resistance: "330"}
+    package_ref: r0402
+
+nets:
+  VCC: [U1.vcc, R1.p1, U1.reset, C2.p1]
+  GND: [U1.gnd, C1.p2, C2.p2, D1.cathode]
+  DISCH: [U1.disch, R1.p2, R2.p1]
+  TRIG: [U1.thresh, U1.trig, R2.p2, C1.p1]
+  OUT: [U1.out, R3.p1]
+  LED_A: [R3.p2, D1.anode]
+
+intents:
+  - {type: power_rail, net: VCC, voltage_v: 5.0}
+  - {type: decouples, part: C2, target: U1.vcc}
+
+placement_hints: []

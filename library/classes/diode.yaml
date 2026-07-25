@@ -1,0 +1,13 @@
+fairypcbot: "0.1"
+kind: component_class
+id: diode
+pins:
+  - {role: anode}
+  - {role: cathode}
+params:
+  required: [vf_v, if_max_a, vr_max_v]
+  optional: []
+models: {}
+rules:
+  - type: domain_atomic
+application_circuit: null

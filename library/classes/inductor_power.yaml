@@ -1,0 +1,11 @@
+fairypcbot: "0.1"
+kind: component_class
+id: inductor.power
+extends: passive.two_terminal
+params:
+  required: [inductance_h, i_sat_a, dcr_ohm]
+  optional: [shielded]
+models:
+  ripple_current: inductor.ripple_basic
+rules: []
+application_circuit: null

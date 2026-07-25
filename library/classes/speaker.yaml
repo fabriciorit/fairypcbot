@@ -1,0 +1,12 @@
+fairypcbot: "0.1"
+kind: component_class
+id: speaker
+pins:
+  - {role: pos}
+  - {role: neg}
+params:
+  required: [impedance_ohm]
+  optional: [power_w]
+models: {}
+rules: []
+application_circuit: null

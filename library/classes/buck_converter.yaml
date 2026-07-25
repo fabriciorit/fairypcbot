@@ -1,0 +1,25 @@
+fairypcbot: "0.1"
+kind: component_class
+id: buck_converter
+pins:
+  - {role: vin}
+  - {role: gnd}
+  - {role: vout}
+  - {role: en}
+params:
+  required: [vin_range_v, vout_v]
+  optional: [max_current_a]
+models: {}
+rules:
+  - {type: thermal_source}
+application_circuit:
+  parts:
+    L1: {class: inductor.power, sizing: buck.inductor_sizing}
+    CIN: {class: capacitor, sizing: buck.cin_sizing}
+    COUT: {class: capacitor, sizing: buck.cout_sizing}
+  nets_internal: [SW_NODE]
+  intents:
+    - {type: current_loop_minimize, parts: [SELF, L1, COUT], priority: critical}
+  domain:
+    atomic: false
+    split_cost: high
