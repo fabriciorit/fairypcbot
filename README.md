@@ -189,6 +189,10 @@ fae validate && fae elaborate && fae place && fae emit --target easyeda_std
 
 We are actively expanding `fairypcbot`. Future developments include:
 
+- 🍞 **Breadboard & Rapid Prototyping Emitters**: Emitters specifically designed to assist hands-on prototyping on breadboards, stripboards/perfboards, and point-to-point wiring before manufacturing PCBs. Potential effective formats under evaluation:
+  - 🎨 **Interactive Breadboard Assembly Diagrams (Fritzing / DIYLC style)**: Visual step-by-step wiring diagrams mapping component legs to breadboard hole coordinates (e.g. `U1 Pin 1 -> Row 12, Col a-e`).
+  - 📋 **Human-Readable Wiring & Pinout Tables**: Terminal & Markdown tables listing point-to-point jumper connections (e.g. `Wire #4 (Red): From U1.VCC -> Breadboard +5V Rail`).
+  - 🖨️ **Printable Perfboard / Stripboard Templates (1:1 SVG)**: Printable overlays showing stripboard track cuts, jumper bridges, and DIP socket placements.
 - 🔌 **Additional EDA Emitters**: Support for KiCad 8+ (`.kicad_pcb` / `.kicad_sch`), Altium Designer, and LibrePCB formats.
 - 🔄 **Project Importer & Reverse-Engineering**: Import existing KiCad, Eagle, or EasyEDA projects into fairypcbot `intent.yaml` structures.
 - 📦 **Community Open-Source Library Ecosystem**: Dedicated community repository for verified CC0 component classes, datasheets, and IPC-7351 footprints completely free of vendor licensing encumbrances.
