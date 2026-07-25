@@ -189,6 +189,10 @@ fae validate && fae elaborate && fae place && fae emit --target easyeda_std
 
 We are actively expanding `fairypcbot`. Future developments include:
 
+- 🧪 **Circuit Simulation & SPICE Integration**: Automated SPICE netlist generation (`fae simulate`) and co-simulation integration (via ngspice / PySpice) to empower LLMs and engineers to validate analog/digital circuit behavior before materializing PCB geometry. Potential implementation paths under evaluation:
+  - 📊 **Automated SPICE Netlist Synthesis (`.cir` / `.sp`)**: Translating `intent.yaml` parameters and component pin models into structured SPICE subcircuits for transient, AC frequency response, and DC operating point analysis.
+  - ⚠️ **Component Stress & Power Rating Checks**: Simulating peak voltage, current, and power dissipation ($P = V \cdot I$) across passive and active components to automatically warn the LLM if a resistor/transistor exceeds rated tolerances.
+  - 📈 **Visual Signal Waveforms & Feedback Integration**: Exporting SVG plot artifacts of node voltages (e.g. BFO beat frequency, 555 duty cycle) to allow LLM agents to autonomously fine-tune component values in `intent.yaml` until target electrical goals are reached.
 - 🍞 **Breadboard & Rapid Prototyping Emitters**: Emitters specifically designed to assist hands-on prototyping on breadboards, stripboards/perfboards, and point-to-point wiring before manufacturing PCBs. Potential effective formats under evaluation:
   - 🎨 **Interactive Breadboard Assembly Diagrams (Fritzing / DIYLC style)**: Visual step-by-step wiring diagrams mapping component legs to breadboard hole coordinates (e.g. `U1 Pin 1 -> Row 12, Col a-e`).
   - 📋 **Human-Readable Wiring & Pinout Tables**: Terminal & Markdown tables listing point-to-point jumper connections (e.g. `Wire #4 (Red): From U1.VCC -> Breadboard +5V Rail`).
