@@ -33,17 +33,37 @@ Main command: `fairypcbot`, short alias: **`fae`**.
 
 ### How Simple It Is
 
-Going from an idea to a placed board candidate takes 5 straightforward CLI commands:
+`fairypcbot` supports two complementary workflows depending on whether you prefer AI automation or direct CLI control:
+
+#### 🤖 1. Fully Autonomous / LLM-Guided Workflow (Primary & Most Common)
+
+This is the primary way to use `fairypcbot`. You don't need to write YAML files or memorize CLI commands — simply prompt any LLM agent (via VSCode, Claude Desktop, Antigravity, or terminal) to design a board:
+
+> *"Create a PCB project in EasyEDA implementing a simple, analog metal detector."*
+
+1. **Autonomous Execution**: The LLM agent queries `fairypcbot` (`fae llm`), asks you **only strictly essential questions** (e.g. target board dimensions, power connector preference), and autonomously assumes typical engineering best practices for everything else (decoupling capacitance, ground planes, feedback loops).
+2. **Automated Synthesis**: The LLM writes `intent.yaml`, runs `fae validate`, `fae elaborate`, and `fae place`, inspecting layout candidates automatically.
+3. **Ready-to-Route CAD Output**: The LLM outputs a complete CAD project (e.g. EasyEDA Standard/Pro) with **all components already physically placed in valid floorplans**.
+
+All components arrive pre-placed with optimal decoupling and signal proximity. All that remains is for you to route the board (manually or via your preferred autorouter), verify the schematic/PCB, and send it straight to fabrication!
+
+---
+
+#### 🛠️ 2. Manual CLI Workflow (Direct Control)
+
+If you prefer direct hands-on control, going from an explicit `intent.yaml` to a placed CAD project takes 5 straightforward CLI commands:
 
 ```bash
 fae init my_project
 cd my_project
-# Edit intent.yaml (or let an LLM agent write it)
+# Edit intent.yaml manually
 fae validate
 fae elaborate
 fae place
 fae emit --target easyeda_std
 ```
+
+---
 
 ### How Powerful It Gets
 
