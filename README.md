@@ -81,20 +81,19 @@ Under the hood, `fairypcbot` performs multi-layer synthesis:
 ```mermaid
 flowchart TD
     subgraph Input["1. Input Stage"]
-        A["Intent Specification\n(intent.yaml)"]
+        A["Intent Specification<br/>(intent.yaml)"]
     end
 
     subgraph CoreEngine["fairypcbot Engine (fae)"]
-        B["fae validate\n(Pydantic Schemas & Rules)"]
-        C["fae elaborate\n(Netlist Synthesis & Electrical Linter)"]
-        D["fae place / fae render\n(Domain Clustering & SVG Candidates)"]
-        E["fae emit / fae routecheck\n(EasyEDA & Specctra DSN Generators)"]
+        B["fae validate<br/>(Pydantic Schemas & Rules)"]
+        C["fae elaborate<br/>(Netlist Synthesis & Electrical Linter)"]
+        D["fae place / fae render<br/>(Domain Clustering & SVG Candidates)"]
+        E["fae emit / fae routecheck<br/>(EasyEDA & Specctra DSN Generators)"]
     end
 
     subgraph Output["Output & CAD Integration"]
         F["EasyEDA Standard / Pro"]
-        G["Specctra DSN / Freerouting"]
-        H["3D PCB Render & JLCPCB Order"]
+        G["Specctra DSN / Freerouting<br/>(routability check)"]
     end
 
     A --> B
@@ -103,11 +102,9 @@ flowchart TD
     D -->|Placement Candidates| E
     E --> F
     E --> G
-    F --> H
-    G --> H
 
     %% Iterative Feedback Loop
-    D -.->|Review Candidates & Electrical Warnings| I["Iterative Refinement\n(LLM / User adjusts hints & constraints)"]
+    D -.->|Review Candidates & Electrical Warnings| I["Iterative Refinement<br/>(LLM / User adjusts hints & constraints)"]
     I -.->|Refined intent.yaml| A
 ```
 
