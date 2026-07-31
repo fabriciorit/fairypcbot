@@ -12,7 +12,7 @@ intent.yaml → validate → elaborate → place → render → emit → routech
 | 3. Elaboration | `fae elaborate` | `build/netlist.json`, `build/rules.json` + electrical linter | Aborts if validate failed |
 | 4. Placement | `fae place` | `build/placement.json` (1-3 candidates) + SVGs | Aborts if elaborate failed |
 | 4b. Render | `fae render --heuristic <name> [--ratsnest]` | Re-renders the SVG of an already generated candidate | — |
-| 5. Emit | `fae emit --target easyeda_std\|specctra` | File importable into the target CAD | Aborts if `place` hasn't run |
+| 5. Emit | `fae emit --target easyeda_pro\|specctra` | File importable into the target CAD | Aborts if `place` hasn't run |
 | 5b. Routecheck | `fae routecheck` | Runs Freerouting headless over the DSN | Skips gracefully if Freerouting isn't installed (not an error) |
 
 Each command is independent and can be run multiple times — there is no hidden state between runs

@@ -43,7 +43,7 @@ This is the primary way to use `fairypcbot`. You don't need to write YAML files 
 
 1. **Autonomous Execution**: The LLM agent queries `fairypcbot` (`fae llm`), asks you **only strictly essential questions** (e.g. target board dimensions, power connector preference), and autonomously assumes typical engineering best practices for everything else (decoupling capacitance, ground planes, feedback loops).
 2. **Automated Synthesis**: The LLM writes `intent.yaml`, runs `fae validate`, `fae elaborate`, and `fae place`, inspecting layout candidates automatically.
-3. **Ready-to-Route CAD Output**: The LLM outputs a complete CAD project (e.g. EasyEDA Standard/Pro) with **all components already physically placed in valid floorplans**.
+3. **Ready-to-Route CAD Output**: The LLM outputs a complete CAD project (EasyEDA Pro) with **all components already physically placed in valid floorplans**.
 
 All components arrive pre-placed with optimal decoupling and signal proximity. All that remains is for you to route the board (manually or via your preferred autorouter), verify the schematic/PCB, and send it straight to fabrication!
 
@@ -60,7 +60,7 @@ cd my_project
 fae validate
 fae elaborate
 fae place
-fae emit --target easyeda_std
+fae emit --target easyeda_pro
 ```
 
 ---
@@ -88,11 +88,11 @@ flowchart TD
         B["fae validate<br/>(Pydantic Schemas & Rules)"]
         C["fae elaborate<br/>(Netlist Synthesis & Electrical Linter)"]
         D["fae place / fae render<br/>(Domain Clustering & SVG Candidates)"]
-        E["fae emit / fae routecheck<br/>(EasyEDA & Specctra DSN Generators)"]
+        E["fae emit / fae routecheck<br/>(EasyEDA Pro & Specctra DSN Generators)"]
     end
 
     subgraph Output["Output & CAD Integration"]
-        F["EasyEDA Standard / Pro"]
+        F["EasyEDA Pro"]
         G["Specctra DSN / Freerouting<br/>(routability check)"]
     end
 
@@ -116,7 +116,7 @@ flowchart TD
 2. **Validate & Elaborate:** `fae validate` and `fae elaborate` check pin roles, designators, and electrical rules (warning on floating inputs or ungrounded power pins).
 3. **Inspect Candidates:** `fae place` generates candidate floorplans and renders ratsnest SVGs in `build/`.
 4. **Refine Iteratively:** The LLM or engineer inspects placement SVGs and linter warnings, then adjusts placement hints, domain groupings, or board dimensions in `intent.yaml`.
-5. **Converge & Emit:** Once candidate layouts converge to your design intent, `fae emit` materializes the board into EasyEDA or Specctra DSN formats.
+5. **Converge & Emit:** Once candidate layouts converge to your design intent, `fae emit` materializes the board into EasyEDA Pro or Specctra DSN formats.
 
 ---
 
@@ -130,7 +130,7 @@ Milestones M1–M5 of the roadmap are implemented:
 | 2. Validation | `fae validate` | Checks references, pins, import cycles, intent types |
 | 3. Elaboration | `fae elaborate` | Generates `netlist.json` + `rules.json` and runs the electrical linter |
 | 4. Placement | `fae place` / `fae render` | Derives domains, generates 1–3 layout candidates + SVG |
-| 5. Emission | `fae emit` / `fae routecheck` | Materializes into EasyEDA Std/Pro or Specctra DSN |
+| 5. Emission | `fae emit` / `fae routecheck` | Materializes into EasyEDA Pro or Specctra DSN |
 | — | `fae catalog fetch` | Resolves a component via the public EasyEDA API (LCSC) |
 | — | `fae audit show/trace/note` | Queries the audit trail from intent to decision to artifact |
 
@@ -165,7 +165,7 @@ obtained via `catalog fetch`:
 cd examples/metal_detector_bfo
 fae catalog fetch lcsc:C22438596   # LM386M-1
 # ... see examples/metal_detector_bfo/README.md for the full list
-fae validate && fae elaborate && fae place && fae emit --target easyeda_std
+fae validate && fae elaborate && fae place && fae emit --target easyeda_pro
 ```
 
 #### BFO Metal Detector Gallery
