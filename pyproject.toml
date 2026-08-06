@@ -1,10 +1,13 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
 name = "fairypcbot"
-version = "0.1.0"
+# Derived from git (see [tool.hatch.version]) so that the version cannot claim a tree it does not
+# describe: the commit travels inside the wheel as the PEP 440 local segment (`+g<hash>`), which
+# is what `fae version` reports when there is no checkout to ask.
+dynamic = ["version"]
 description = "Intent-driven PCB design framework with formal validation and domain-based placement."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -20,11 +23,19 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov", "ruff", "mypy"]
+# ruff is pinned: an unpinned linter changes its own default rule set between releases, which
+# turns a green CI red without a single line of code changing (see [tool.ruff.lint] below).
+dev = ["pytest", "pytest-cov", "ruff==0.16.0", "mypy"]
 
 [project.scripts]
 fairypcbot = "fairypcbot.cli:app"
 fae = "fairypcbot.cli:app"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/fairypcbot/_version.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/fairypcbot"]
@@ -36,6 +47,12 @@ packages = ["src/fairypcbot"]
 
 [tool.ruff]
 line-length = 100
+
+# Explicit: never inherit whatever the installed ruff considers its default set. `B` and `RUF012`
+# are deliberately absent — they fire on `typer.Option()` defaults and on mutable attributes in
+# pydantic models, both idiomatic in this codebase.
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
 
 [tool.mypy]
 python_version = "3.11"

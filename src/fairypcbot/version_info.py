@@ -10,23 +10,29 @@ Resolution order:
 1. **git** — if the package is running from a checkout (source install, `pip install -e`, or the
    repository itself), ask git directly. This is authoritative and also reports a dirty worktree,
    which no stamp can describe.
-2. **build stamp** — `fairypcbot/_build_info.json`, written at build time when the wheel is built
-   from a checkout. Covers `pip install` from a plain wheel/sdist.
-3. **unknown** — a plain PyPI install with no stamp genuinely cannot know its commit; the field
-   stays `None` with `commit_source: "unknown"` rather than being guessed. Never fabricate it.
+2. **build stamp** — the PEP 440 local segment that hatch-vcs bakes into the version at build time
+   (`0.1.1.dev8+gf42f7062`, with `.dYYYYMMDD` appended when the build came from a dirty tree).
+   Covers `pip install` from a wheel/sdist built out of a checkout.
+3. **unknown** — a release built from an exported tree, or any install whose version carries no
+   local segment, genuinely cannot know its commit; the field stays `None` with
+   `commit_source: "unknown"` rather than being guessed. Never fabricate it.
 """
 
 from __future__ import annotations
 
 import json
 import platform
+import re
 import subprocess
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
 import fairypcbot
 
-_BUILD_INFO_FILENAME = "_build_info.json"
+#: hatch-vcs local segment: `+g<hash>`, optionally followed by `.d<YYYYMMDD>` when the tree was
+#: dirty at build time.
+_LOCAL_SEGMENT_RE = re.compile(r"\+g(?P<commit>[0-9a-f]+)(?:\.d(?P<dirty_date>\d{8}))?")
+_BASE_VERSION_RE = re.compile(r"^(\d+\.\d+\.\d+)")
 
 
 @dataclass
@@ -75,15 +81,23 @@ def find_repo_root() -> Path | None:
     return None
 
 
-def _build_stamp() -> dict[str, str] | None:
-    stamp = Path(__file__).resolve().parent / _BUILD_INFO_FILENAME
-    if not stamp.is_file():
+def base_version(version: str | None = None) -> str:
+    """The `X.Y.Z` prefix, without dev/local suffixes.
+
+    Use this when comparing against a version written by hand somewhere (documentation, a
+    changelog): `0.1.1.dev8+gf42f7062` and `0.1.1` describe the same release line.
+    """
+    raw = fairypcbot.__version__ if version is None else version
+    match = _BASE_VERSION_RE.match(raw)
+    return match.group(1) if match else raw
+
+
+def _commit_from_local_segment(version: str) -> tuple[str, bool] | None:
+    """`(short_commit, dirty)` from the version's local segment, or None if it carries none."""
+    match = _LOCAL_SEGMENT_RE.search(version)
+    if match is None:
         return None
-    try:
-        data = json.loads(stamp.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return None
-    return data if isinstance(data, dict) else None
+    return match.group("commit"), match.group("dirty_date") is not None
 
 
 def _is_editable() -> bool:
@@ -135,16 +149,16 @@ def resolve() -> VersionInfo:
             )
             return VersionInfo(**base)  # type: ignore[arg-type]
 
-    stamp = _build_stamp()
-    if stamp and stamp.get("commit"):
-        commit = str(stamp["commit"])
+    stamped = _commit_from_local_segment(fairypcbot.__version__)
+    if stamped is not None:
+        short, dirty = stamped
         base.update(
-            commit=commit,
-            commit_short=commit[:7],
-            commit_date=stamp.get("commit_date"),
-            branch=stamp.get("branch"),
-            dirty=stamp.get("dirty"),
-            tag=stamp.get("tag"),
+            # The local segment only carries an abbreviated hash. Reporting it as `commit_short`
+            # and leaving `commit` null is the honest shape — padding it into a full-length hash
+            # would produce a value that looks authoritative and resolves to nothing.
+            commit=None,
+            commit_short=short,
+            dirty=dirty,
             commit_source="build_stamp",
         )
 
@@ -156,8 +170,13 @@ def describe() -> str:
     info = resolve()
     if info.commit_short is None:
         return f"{info.version} @ commit unknown [{info.commit_source}]"
-    parts = [info.branch or "detached", "dirty" if info.dirty else "clean"]
-    tag = f", tag {info.tag}" if info.tag else ""
-    return (
-        f"{info.version} @ {info.commit_short} ({', '.join(parts)}{tag}) [{info.commit_source}]"
-    )
+    parts = []
+    if info.branch is not None:
+        parts.append(info.branch)
+    elif info.commit_source == "git":
+        # Only git can tell "detached HEAD" apart from "nobody recorded a branch".
+        parts.append("detached")
+    parts.append("dirty" if info.dirty else "clean")
+    if info.tag:
+        parts.append(f"tag {info.tag}")
+    return f"{info.version} @ {info.commit_short} ({', '.join(parts)}) [{info.commit_source}]"

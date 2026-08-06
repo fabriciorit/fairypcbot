@@ -67,8 +67,10 @@ def render_identity_block() -> str:
         "# resolved by `fae skill` at read time — describes the running installation",
         f"version: {_yaml_scalar(info.version)}",
     ]
-    if info.commit:
+    if info.commit_short:
         lines += [
+            # `commit` is null when only a build stamp is available: the local segment carries an
+            # abbreviated hash, and a padded one would resolve to nothing.
             f"commit: {_yaml_scalar(info.commit)}",
             f"commit_short: {_yaml_scalar(info.commit_short)}",
             f"commit_date: {_yaml_scalar(info.commit_date)}",

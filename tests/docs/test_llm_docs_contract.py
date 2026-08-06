@@ -8,8 +8,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import fairypcbot
-from fairypcbot import llm_docs
+from fairypcbot import llm_docs, version_info
 
 INDEX_MAX_LINES = 150
 TOPIC_MAX_LINES = 400
@@ -38,9 +37,13 @@ def test_index_mentions_every_topic():
 
 
 def test_index_declares_version_matching_package():
+    # A versão é derivada do git (hatch-vcs), então entre tags ela carrega sufixos de dev/commit
+    # (`0.1.1.dev8+gf42f7062`). O INDEX.md documenta a linha de release, não o build exato — para
+    # o build exato existe `fae version`.
     index_text = llm_docs.read_index()
-    assert fairypcbot.__version__ in index_text, (
-        f"INDEX.md não declara a versão atual ({fairypcbot.__version__}) — atualize junto de "
+    declared = version_info.base_version()
+    assert declared in index_text, (
+        f"INDEX.md não declara a versão atual ({declared}) — atualize junto de "
         f"qualquer bump em fairypcbot.__version__"
     )
 

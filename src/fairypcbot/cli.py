@@ -99,8 +99,9 @@ placement_hints: []
 
 _LLM_POINTER_TEMPLATE = """\
 This project uses fairypcbot. Before touching intent.yaml or running `fae`/`fairypcbot` commands,
-run `fae llm` for the documentation index (and `fae llm <topic>` to dig deeper) — do not assume
-the YAML format or command behavior without checking first.
+run `fae skill` for the full working contract (it also reports which build you are driving), and
+`fae llm` / `fae llm <topic>` for the documentation index and its topics — do not assume the YAML
+format or command behavior without checking first.
 """
 
 

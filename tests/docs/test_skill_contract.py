@@ -49,9 +49,27 @@ def test_commit_is_never_invented():
     if info.commit_source == "unknown":
         assert info.commit is None
         assert info.commit_short is None
-    else:
+    elif info.commit_source == "git":
         assert info.commit
         assert info.commit_short == info.commit[:7]
+    else:  # build_stamp — só o hash abreviado existe; preencher `commit` seria inventá-lo
+        assert info.commit is None
+        assert info.commit_short
+
+
+def test_base_version_strips_dev_and_local_suffixes():
+    assert version_info.base_version("0.1.1.dev8+gf42f7062.d20260806") == "0.1.1"
+    assert version_info.base_version("0.1.0") == "0.1.0"
+    assert version_info.base_version("garbage") == "garbage"
+
+
+def test_local_segment_parsing_detects_commit_and_dirtiness():
+    assert version_info._commit_from_local_segment("0.1.1.dev8+gf42f7062") == ("f42f7062", False)
+    assert version_info._commit_from_local_segment("0.1.1.dev8+gf42f7062.d20260806") == (
+        "f42f7062",
+        True,
+    )
+    assert version_info._commit_from_local_segment("0.1.0") is None
 
 
 def test_version_command_json_is_parseable():

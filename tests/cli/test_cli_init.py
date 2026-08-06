@@ -26,6 +26,9 @@ def test_init_creates_llm_pointers(tmp_path: Path):
     for pointer in ("AGENTS.md",):
         content = (project / pointer).read_text(encoding="utf-8")
         assert "fae llm" in content
+        # A skill portátil não vive na raiz do repo, então o ponteiro gerado é o que a torna
+        # descobrível para uma LLM trabalhando num projeto de PCB.
+        assert "fae skill" in content
 
 
 def test_init_does_not_overwrite_existing(tmp_path: Path):

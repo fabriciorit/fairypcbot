@@ -13,6 +13,10 @@ jobs:
         python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
+        with:
+          # hatch-vcs derives the version from tags; the default depth-1 checkout fetches none,
+          # which would silently produce a bogus version instead of failing.
+          fetch-depth: 0
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5

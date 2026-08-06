@@ -1,6 +1,8 @@
 # fairypcbot — index for LLMs
 
-Documented version: **0.1.0** (must match `fairypcbot.__version__` — checked in CI).
+Documented release line: **0.1.0** (must match the base version of `fairypcbot.__version__` —
+checked in CI). The version is derived from git, so a development build reports something like
+`0.1.1.dev8+gf42f7062`; run `fae version` for the exact build you are driving.
 
 This is the entry point for any LLM operating fairypcbot on behalf of a user. Read this first;
 open the topics below only when the task requires it (progressive disclosure — don't load
