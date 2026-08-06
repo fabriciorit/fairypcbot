@@ -31,6 +31,7 @@ packages = ["src/fairypcbot"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "docs/llm" = "fairypcbot/docs/llm"
+"docs/skill" = "fairypcbot/docs/skill"
 "library" = "fairypcbot/library"
 
 [tool.ruff]

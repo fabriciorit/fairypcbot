@@ -6,6 +6,10 @@ This is the entry point for any LLM operating fairypcbot on behalf of a user. Re
 open the topics below only when the task requires it (progressive disclosure — don't load
 everything at once).
 
+**Portable skill**: `fae skill` prints a single self-contained SKILL.md usable by any LLM
+(Claude, Gemini, ...), with the running build's identity resolved into it; `fae version --json`
+gives that identity on its own (version, commit, branch, dirty).
+
 **Access**: `fae llm` prints this index; `fae llm <topic>` prints a topic (works from any pip
 installation, no dependency on having the repository path).
 

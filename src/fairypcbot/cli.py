@@ -12,6 +12,8 @@ from rich.table import Table
 from fairypcbot import (  # noqa: F401 — schemas ensures registration of built-in intents
     llm_docs,
     schemas,
+    skill,
+    version_info,
 )
 from fairypcbot.audit.reader import build_trace, iter_events
 from fairypcbot.audit.writer import AuditWriter
@@ -120,6 +122,27 @@ def init(path: Path = typer.Argument(Path("."), help="New project directory")) -
         if not pointer_path.exists():
             pointer_path.write_text(_LLM_POINTER_TEMPLATE, encoding="utf-8")
     console.print(f"[green]Project created at '{path}'.[/green]")
+
+
+@app.command(name="version")
+def version_cmd(
+    json_out: bool = typer.Option(False, "--json", help="Print the full identity as JSON"),
+) -> None:
+    """Identify this installation: version and, when resolvable, the exact commit."""
+    if json_out:
+        print(version_info.resolve().to_json_str())
+        return
+    print(version_info.describe())
+
+
+@app.command(name="skill")
+def skill_cmd(
+    raw: bool = typer.Option(
+        False, "--raw", help="Print the stored file without resolving the identity block"
+    ),
+) -> None:
+    """Print SKILL.md — the portable skill for any LLM, with this build's identity resolved."""
+    print(skill.read_raw() if raw else skill.render())
 
 
 @app.command(name="llm")
